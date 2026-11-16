@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickBite | Food Ordering App (HCI Project - Sabila Memon)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="light-theme">
+
+  <!-- =====================================================================
+       EVALUATOR BANNER & INSTANT SCREEN NAVIGATION
+       ===================================================================== -->
+  <div class="evaluator-banner">
+    <div class="container evaluator-inner">
+      <div class="evaluator-label">
+        <span class="badge-name">HCI Semester Project</span>
+        <span>Student: <strong>Sabila Memon</strong> (2K24/TCS/27)</span>
+      </div>
+      <nav class="screen-switcher-nav" aria-label="Screen Navigation">
+        <button class="screen-tab-btn active" data-screen="screen-home" id="nav-btn-home">
+          1. Home / Discovery
+        </button>
+        <button class="screen-tab-btn" data-screen="screen-menu" id="nav-btn-menu">
+          2. Restaurant Menu
+        </button>
+        <button class="screen-tab-btn" data-screen="screen-cart" id="nav-btn-cart">
+          3. Cart Review (<span class="tab-cart-count">2</span>)
+        </button>
+        <button class="screen-tab-btn" data-screen="screen-checkout" id="nav-btn-checkout">
+          4. Checkout & Payment
+        </button>
+        <button class="screen-tab-btn" data-screen="screen-tracking" id="nav-btn-tracking">
+          5. Live Order Tracking
+        </button>
+        <button class="screen-tab-btn" data-screen="screen-profile" id="nav-btn-profile">
+          6. Profile (Sabila Memon)
+        </button>
+      </nav>
+      <a href="report.html" target="_blank" class="view-report-link">
+        📄 View Official Report (PDF)
+      </a>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       SITE HEADER
+       ===================================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand-logo" onclick="app.showScreen('screen-home')" title="QuickBite Home">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-name">Quick<span>Bite</span></div>
+      </div>
+
+      <div class="location-picker hci-highlight" data-hci="h2_realworld" title="Active Delivery Destination">
+        <span>📍</span>
+        <span id="current-location-label"><strong>Delivery:</strong> Apt 12B, Skyline Towers</span>
+        <span style="font-size: 0.7rem; color: var(--text-muted)">▼</span>
+        <span class="hci-badge-pill" onclick="app.inspectHci('h2_realworld', event)">HCI: Real-World Match</span>
+      </div>
+
+      <div class="header-controls">
+        <!-- Theme Switcher -->
+        <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="app.toggleTheme()" title="Switch Light/Dark Theme">
+          🌓
+        </button>
+
+        <!-- HCI Inspection Toggle -->
+        <button class="hci-mode-btn" id="toggle-hci-btn" onclick="app.toggleHciMode()">
+          <span>🎯</span>
+          <span id="hci-btn-text">HCI Mode: OFF</span>
+        </button>
+
+        <!-- Cart Icon Button -->
+        <button class="cart-btn hci-highlight" data-hci="h1_status" onclick="app.showScreen('screen-cart')" title="View Shopping Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-badge" id="header-cart-badge">2</span>
+          <span class="hci-badge-pill" onclick="app.inspectHci('h1_status', event)">HCI: System Status</span>
+        </button>
+
+        <!-- User Profile Nav Pill -->
+        <button class="user-nav-btn hci-highlight" data-hci="h6_recognition" onclick="app.showScreen('screen-profile')" title="Sabila Memon Profile">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Sabila Memon" class="user-nav-avatar">
+          <span class="user-nav-name">Sabila Memon</span>
+          <span class="hci-badge-pill" onclick="app.inspectHci('h6_recognition', event)">HCI: Recognition</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       SCREEN 1: HOME & DISCOVERY
+       ===================================================================== -->
+  <main id="screen-home" class="app-view active">
+    <div class="container">
+      
+      <!-- Modern Hero Card -->
+      <section class="hero-glass-card">
+        <div class="hero-content">
+          <div class="hero-pill-badge">⚡ Ultra-Fast 20-Min Delivery</div>
+          <h1 class="hero-title">Delicious food delivered <span class="gradient-text">straight to you.</span></h1>
+          <p class="hero-subtitle">Order from top-rated restaurants, woodfire pizzas, and artisan burgers in your area.</p>
+          
+          <!-- Search Bar -->
+          <div class="search-box-wrapper hci-highlight" data-hci="h6_recognition">
+            <span class="search-icon-pos">🔍</span>
+            <input type="text" id="main-search-input" class="search-input" placeholder="Search pizza, wagyu burger, ramen, pasta..." oninput="app.handleSearch(this.value)">
+            <span class="hci-badge-pill" onclick="app.inspectHci('h6_recognition', event)">HCI: Recognition Over Recall</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Categories Pills (Fitts's Law) -->
+      <section class="hci-highlight" data-hci="h7_fitts">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--text-white);">Categories</h2>
+          <span style="font-size: 0.82rem; color: var(--text-muted);">Touch-Optimized</span>
+        </div>
+        <div class="category-chips-list" id="categories-container">
+          <!-- Populated from data.js -->
+        </div>
+        <span class="hci-badge-pill" onclick="app.inspectHci('h7_fitts', event)">HCI: Fitts's Law Target Size</span>
+      </section>
+
+      <!-- Quick Filter Chips -->
+      <section class="filters-strip hci-highlight" data-hci="h8_minimalist">
+        <button class="filter-pill active" onclick="app.filterByBadge('all', this)">All Places</button>
+        <button class="filter-pill" onclick="app.filterByBadge('rated', this)">⭐ Top Rated (4.9+)</button>
+        <button class="filter-pill" onclick="app.filterByBadge('fast', this)">⚡ Fast (< 20 min)</button>
+        <button class="filter-pill" onclick="app.filterByBadge('free', this)">🎉 Free Delivery</button>
+        <button class="filter-pill" onclick="app.filterByBadge('veg', this)">🌱 Plant-Based</button>
+        <span class="hci-badge-pill" onclick="app.inspectHci('h8_minimalist', event)">HCI: Minimalist Filtering</span>
+      </section>
+
+      <!-- Restaurants Grid -->
+      <section>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <h2 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--text-white);">Popular Restaurants</h2>
+          <span style="font-size: 0.82rem; color: var(--text-muted);" id="restaurants-count-label">4 places available</span>
+        </div>
+        <div class="restaurant-grid" id="restaurants-container">
+          <!-- Populated from data.js -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- =====================================================================
+       SCREEN 2: RESTAURANT MENU & FOOD DETAILS
+       ===================================================================== -->
+  <main id="screen-menu" class="app-view">
+    <div class="container">
+      
+      <!-- Restaurant Header Banner -->
+      <div class="rest-banner-hero" id="menu-rest-banner">
+        <img id="menu-rest-image" src="" alt="Restaurant Banner">
+        <div class="rest-banner-overlay">
+          <div>
+            <button class="back-to-home-btn hci-highlight" data-hci="h3_control" onclick="app.showScreen('screen-home')">
+              ← Back to Restaurants
+              <span class="hci-badge-pill" onclick="app.inspectHci('h3_control', event)">HCI: User Freedom & Exit</span>
+            </button>
+            <h1 style="font-family: var(--font-display); font-size: 2.1rem; font-weight: 800; margin-bottom: 0.35rem; color: #FFF;" id="menu-rest-name">L'Artigiano Woodfire Pizzeria</h1>
+            <p style="color: #E2E8F0; font-size: 0.95rem;" id="menu-rest-tagline">Authentic Neapolitan sourdough & artisan mozzarella.</p>
+            <div style="display: flex; gap: 1rem; margin-top: 0.75rem; font-size: 0.85rem; color: #E2E8F0; flex-wrap: wrap;">
+              <span>⭐ <strong id="menu-rest-rating">4.95</strong></span>
+              <span>•</span>
+              <span id="menu-rest-time">⏱️ 20-25 min</span>
+              <span>•</span>
+              <span id="menu-rest-fee">🛵 $1.99 Delivery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="font-family: var(--font-display); font-size: 1.45rem; font-weight: 800; color: var(--text-white);">Menu Items</h2>
+        <button class="btn-secondary hci-highlight" data-hci="h4_consistency" onclick="app.showScreen('screen-cart')">
+          🛒 View Bag
+          <span class="hci-badge-pill" onclick="app.inspectHci('h4_consistency', event)">HCI: Consistency</span>
+        </button>
+      </div>
+
+      <!-- Dishes Grid -->
+      <div class="menu-dishes-grid" id="menu-dishes-container">
+        <!-- Injected via app.js -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =====================================================================
+       SCREEN 3: CART REVIEW & PRICE BREAKDOWN
+       ===================================================================== -->
+  <main id="screen-cart" class="app-view">
+    <div class="container">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h1 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--text-white);">Your Food Bag</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Review selected dishes, adjust quantities, or apply discount coupons.</p>
+        </div>
+        <button class="btn-secondary" onclick="app.showScreen('screen-home')">← Add More Dishes</button>
+      </div>
+
+      <div class="cart-layout">
+        
+        <!-- Cart Items List -->
+        <div class="cart-items-card hci-highlight" data-hci="h3_control">
+          <div class="cart-header-row">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-white);">Selected Items</h3>
+            <button class="clear-cart-link hci-highlight" data-hci="h5_error_prev" onclick="app.confirmClearCart()">
+              🗑️ Clear Entire Bag
+              <span class="hci-badge-pill" onclick="app.inspectHci('h5_error_prev', event)">HCI: Error Prevention Dialog</span>
+            </button>
+          </div>
+
+          <div id="cart-items-list">
+            <!-- Rendered by app.renderCart() -->
+          </div>
+          <span class="hci-badge-pill" onclick="app.inspectHci('h3_control', event)">HCI: User Control & Undo</span>
+        </div>
+
+        <!-- Order Summary Sidebar -->
+        <div class="order-summary-card hci-highlight" data-hci="h1_status">
+          <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: var(--text-white); margin-bottom: 1.25rem;">Payment Summary</h3>
+          
+          <!-- Promo Code Input -->
+          <div class="promo-form">
+            <input type="text" id="promo-input-box" class="promo-input" placeholder="Coupon Code (e.g. SABILA25)">
+            <button class="btn-secondary" onclick="app.applyPromoCode()">Apply</button>
+          </div>
+          <div id="promo-applied-message" style="display:none; font-size: 0.8rem; color: var(--secondary); font-weight: 800; margin-top: -1rem; margin-bottom: 1rem;">
+            ✓ VIP Coupon SABILA25 Applied: 25% Off!
+          </div>
+
+          <!-- Bill Calculation -->
+          <div class="bill-line">
+            <span>Dishes Subtotal</span>
+            <span id="bill-subtotal" style="color: var(--text-white);">$34.00</span>
+          </div>
+          <div class="bill-line">
+            <span>Delivery Fee</span>
+            <span id="bill-delivery" style="color: var(--text-white);">$1.99</span>
+          </div>
+          <div class="bill-line">
+            <span>Estimated Tax & Service (10%)</span>
+            <span id="bill-tax" style="color: var(--text-white);">$3.40</span>
+          </div>
+          <div class="bill-line discount" id="bill-discount-row" style="display: none;">
+            <span>Student Discount</span>
+            <span id="bill-discount">-$8.50</span>
+          </div>
+          <div class="bill-total-line">
+            <span>Total</span>
+            <span id="bill-grand-total" style="color: var(--primary);">$39.39</span>
+          </div>
+
+          <!-- Proceed CTA (Fitts's Law) -->
+          <button class="btn-primary hci-highlight" data-hci="h7_fitts" onclick="app.showScreen('screen-checkout')">
+            <span>Proceed to Checkout</span>
+            <span>→</span>
+            <span class="hci-badge-pill" onclick="app.inspectHci('h7_fitts', event)">HCI: Fitts's Law Big Target</span>
+          </button>
+          <span class="hci-badge-pill" onclick="app.inspectHci('h1_status', event)">HCI: System Status Costs</span>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =====================================================================
+       SCREEN 4: CHECKOUT & PAYMENT SPECIFICATION
+       ===================================================================== -->
+  <main id="screen-checkout" class="app-view">
+    <div class="container">
+      
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <h1 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--text-white);">Checkout & Payment</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Review destination and choose payment method</p>
+      </div>
+
+      <div class="checkout-grid">
+        
+        <!-- Left: Destination & Payment -->
+        <div>
+          <!-- Delivery Address -->
+          <div class="checkout-card hci-highlight" data-hci="h6_recognition">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-white); margin-bottom: 1rem;">1. Delivery Destination</h3>
+            
+            <div id="checkout-address-list">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="form-group" style="margin-top: 1rem;">
+              <label class="form-label">Delivery Note (Optional)</label>
+              <input type="text" class="form-input" id="delivery-note-input" placeholder="e.g. Leave with security, ring bell...">
+            </div>
+            <span class="hci-badge-pill" onclick="app.inspectHci('h6_recognition', event)">HCI: Address Recognition</span>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="checkout-card hci-highlight" data-hci="h2_realworld">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-white); margin-bottom: 1rem;">2. Payment Method</h3>
+
+            <!-- 3D Card Visual Rendering -->
+            <div class="virtual-card-wrapper">
+              <div class="virtual-card">
+                <div class="card-top-row">
+                  <div class="card-chip"></div>
+                  <div class="card-brand" id="card-brand-display">VISA</div>
+                </div>
+                <div class="card-number-display" id="card-number-render">4532 •••• •••• 8921</div>
+                <div class="card-bottom-row">
+                  <div>
+                    <div style="font-size: 0.65rem; color: #94A3B8; text-transform: uppercase;">Cardholder</div>
+                    <div class="card-holder-name" id="card-name-render">SABILA MEMON</div>
+                  </div>
+                  <div>
+                    <div style="font-size: 0.65rem; color: #94A3B8; text-transform: uppercase;">Expires</div>
+                    <div class="card-exp-display" id="card-exp-render">08/29</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-options-grid">
+              <div class="pay-card selected" onclick="app.selectPaymentMethod('card', this)">
+                <div style="font-size: 1.4rem; margin-bottom: 0.2rem;">💳</div>
+                <strong>Credit Card</strong>
+              </div>
+              <div class="pay-card" onclick="app.selectPaymentMethod('applepay', this)">
+                <div style="font-size: 1.4rem; margin-bottom: 0.2rem;">📱</div>
+                <strong>Digital Wallet</strong>
+              </div>
+              <div class="pay-card" onclick="app.selectPaymentMethod('cash', this)">
+                <div style="font-size: 1.4rem; margin-bottom: 0.2rem;">💵</div>
+                <strong>Cash on Delivery</strong>
+              </div>
+            </div>
+
+            <div id="card-fields-section">
+              <div class="form-group">
+                <label class="form-label">Card Number</label>
+                <input type="text" class="form-input" id="card-num-input" value="4532 8920 1142 8921" oninput="app.updateLiveCard(this.value, 'number')">
+              </div>
+              <div style="display: flex; gap: 0.75rem;">
+                <div class="form-group" style="flex: 1;">
+                  <label class="form-label">Cardholder Name</label>
+                  <input type="text" class="form-input" id="card-name-input" value="SABILA MEMON" oninput="app.updateLiveCard(this.value, 'name')">
+                </div>
+                <div class="form-group" style="flex: 0.6;">
+                  <label class="form-label">Expiry</label>
+                  <input type="text" class="form-input" id="card-exp-input" value="08/29" oninput="app.updateLiveCard(this.value, 'exp')">
+                </div>
+                <div class="form-group" style="flex: 0.5;">
+                  <label class="form-label">CVV</label>
+                  <input type="password" class="form-input" id="card-cvv-input" value="842" maxlength="4">
+                </div>
+              </div>
+            </div>
+            <span class="hci-badge-pill" onclick="app.inspectHci('h2_realworld', event)">HCI: Physical Card Mental Model</span>
+          </div>
+
+        </div>
+
+        <!-- Right: Order Summary Confirmation -->
+        <div>
+          <div class="order-summary-card">
+            <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: var(--text-white); margin-bottom: 1rem;">Order Review</h3>
+            
+            <div id="checkout-summary-mini">
+              <!-- Mini items summary -->
+            </div>
+
+            <div class="bill-line" style="margin-top: 1rem; font-size: 1.05rem;">
+              <span>Total Amount</span>
+              <strong id="checkout-final-amount" style="font-size: 1.35rem; color: var(--primary);">$39.39</strong>
+            </div>
+
+            <button class="btn-primary" id="place-order-btn" style="margin-top: 1.25rem;" onclick="app.placeOrder()">
+              <span>Confirm & Place Order</span>
+            </button>
+            <button class="btn-secondary" style="width: 100%; margin-top: 0.65rem;" onclick="app.showScreen('screen-cart')">
+              ← Return to Bag
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =====================================================================
+       SCREEN 5: LIVE ORDER TRACKING & STATUS
+       ===================================================================== -->
+  <main id="screen-tracking" class="app-view">
+    <div class="container tracking-wrapper">
+      
+      <!-- Interactive Evaluator Simulator -->
+      <div style="background: rgba(245, 158, 11, 0.12); border: 1px dashed #F59E0B; border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;" class="hci-highlight" data-hci="h1_status">
+        <div>
+          <strong style="color: #D97706;">🧪 Live Status Simulator:</strong>
+          <span style="font-size: 0.82rem; color: var(--text-muted);">Advance through delivery stages to inspect state transitions.</span>
+        </div>
+        <button class="btn-secondary" style="background: #F59E0B; color: #0F172A; border: none; font-weight: 800;" onclick="app.advanceTrackingStage()">
+          Advance Next Stage ⏩
+        </button>
+        <span class="hci-badge-pill" onclick="app.inspectHci('h1_status', event)">HCI: Real-time System Status</span>
+      </div>
+
+      <!-- Live ETA Card -->
+      <div class="tracking-hero-header">
+        <div>
+          <span style="font-size: 0.78rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Estimated Arrival</span>
+          <div class="eta-highlight" id="tracking-eta-time">18 - 25 mins</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem;" id="tracking-status-subtitle">Chef is preparing your meal with artisan ingredients.</p>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Order Tracker</span>
+          <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: var(--text-white);" id="tracking-order-id">#QB-99412</div>
+          <span style="font-size: 0.75rem; background: rgba(16, 185, 129, 0.2); color: #10B981; padding: 2px 8px; border-radius: 4px; font-weight: 800;">Paid Online</span>
+        </div>
+      </div>
+
+      <!-- Stepper Nodes -->
+      <div class="order-status-stepper">
+        <div class="stepper-progress-line">
+          <div class="stepper-progress-fill" id="tracking-stepper-fill" style="width: 35%;"></div>
+        </div>
+
+        <div class="track-step-node completed" id="track-step-1">
+          <div class="track-circle">✓</div>
+          <span class="track-label">Confirmed</span>
+        </div>
+        <div class="track-step-node active" id="track-step-2">
+          <div class="track-circle">🍳</div>
+          <span class="track-label">In Kitchen</span>
+        </div>
+        <div class="track-step-node" id="track-step-3">
+          <div class="track-circle">🛵</div>
+          <span class="track-label">On the Way</span>
+        </div>
+        <div class="track-step-node" id="track-step-4">
+          <div class="track-circle">🎉</div>
+          <span class="track-label">Delivered</span>
+        </div>
+      </div>
+
+      <!-- Vector Map Canvas -->
+      <div class="map-simulation-card hci-highlight" data-hci="h2_realworld">
+        <svg class="map-route-svg" viewBox="0 0 600 280" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+          <path d="M 50 200 Q 200 80 320 150 T 550 90" fill="none" stroke="rgba(150,150,150,0.3)" stroke-width="8" stroke-linecap="round"></path>
+          <path d="M 50 200 Q 200 80 320 150 T 550 90" fill="none" stroke="#FF4B2B" stroke-width="4" stroke-dasharray="8 6" stroke-linecap="round"></path>
+          
+          <circle cx="50" cy="200" r="16" fill="#1E293B" stroke="#FF4B2B" stroke-width="2"></circle>
+          <text x="50" y="206" font-size="16" text-anchor="middle" fill="#FFF">🏪</text>
+          
+          <circle cx="550" cy="90" r="16" fill="#1E293B" stroke="#10B981" stroke-width="2"></circle>
+          <text x="550" y="96" font-size="16" text-anchor="middle" fill="#FFF">🏠</text>
+        </svg>
+
+        <div class="courier-marker" id="courier-bike-marker" title="Courier Location">
+          🛵
+        </div>
+        <span class="hci-badge-pill" onclick="app.inspectHci('h2_realworld', event)">HCI: Real-World Route Model</span>
+      </div>
+
+      <!-- Driver Card -->
+      <div class="driver-card hci-highlight" data-hci="h4_consistency">
+        <div style="display: flex; align-items: center; gap: 1.25rem;">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" alt="Marcus Vance" class="driver-photo">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-white);">Marcus Vance</h4>
+              <span class="rating-badge">★ 4.95</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">QuickBite Courier • Red Scooter</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn-icon-round" onclick="app.showToast('Calling driver (+1-555-0199)...', 'info')" title="Call Driver">📞</button>
+          <button class="btn-icon-round" onclick="app.showToast('Opening chat with driver...', 'info')" title="Message Driver">💬</button>
+          <button class="btn-secondary hci-highlight" data-hci="h3_control" onclick="app.confirmCancelOrder()">
+            Cancel
+            <span class="hci-badge-pill" onclick="app.inspectHci('h3_control', event)">HCI: Graceful Exit</span>
+          </button>
+        </div>
+        <span class="hci-badge-pill" onclick="app.inspectHci('h4_consistency', event)">HCI: Standard Action Affordance</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =====================================================================
+       SCREEN 6: USER PROFILE & FAST REORDER (Sabila Memon)
+       ===================================================================== -->
+  <main id="screen-profile" class="app-view">
+    <div class="container" style="max-width: 900px;">
+      
+      <!-- Profile Hero Card -->
+      <div class="profile-hero-card">
+        <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Sabila Memon" class="profile-avatar-xl">
+          <div>
+            <h1 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--text-white);">Sabila Memon</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Roll No: 2K24/TCS/27 • Computer Science</p>
+            <div class="vip-badge-pill">
+              👑 QuickBite Gold Member
+            </div>
+          </div>
+        </div>
+        <button class="btn-secondary" onclick="app.showToast('Settings saved successfully!', 'success')">Settings</button>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid-row">
+        <div class="stat-metric-card">
+          <div class="stat-value">38</div>
+          <div class="stat-label">Orders Completed</div>
+        </div>
+        <div class="stat-metric-card">
+          <div class="stat-value" style="color: var(--secondary);">$142.50</div>
+          <div class="stat-label">Money Saved</div>
+        </div>
+        <div class="stat-metric-card">
+          <div class="stat-value" style="color: #2563EB;">4.95★</div>
+          <div class="stat-label">Foodie Rating</div>
+        </div>
+      </div>
+
+      <!-- Past Orders with 1-Click Reorder -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h2 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--text-white);">Past Orders & 1-Click Fast Reorder</h2>
+        <span style="font-size: 0.82rem; color: var(--text-muted);">HCI: Recognition over Recall</span>
+      </div>
+
+      <div class="hci-highlight" data-hci="h6_recognition" id="past-orders-container">
+        <!-- Rendered from data.js -->
+        <span class="hci-badge-pill" onclick="app.inspectHci('h6_recognition', event)">HCI: 1-Click Fast Reorder</span>
+      </div>
+
+      <!-- Saved Addresses -->
+      <div style="margin-top: 2rem; margin-bottom: 1rem;">
+        <h2 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--text-white);">Saved Addresses</h2>
+      </div>
+      <div id="profile-addresses-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem;">
+        <!-- Injected via JS -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =====================================================================
+       MODALS: ITEM CUSTOMIZER, CLEAR CART, CANCEL ORDER, HCI INSPECTOR
+       ===================================================================== -->
+  
+  <!-- Dish Customization Modal -->
+  <div class="modal-backdrop" id="modal-dish-customizer">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="app.closeModal('modal-dish-customizer')">✕</button>
+      <div id="dish-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Clear Cart Confirmation Modal -->
+  <div class="modal-backdrop" id="modal-confirm-clear">
+    <div class="modal-card hci-highlight" data-hci="h5_error_prev" style="text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
+      <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-white);">Clear all items from your bag?</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        This action will wipe all selected dishes. You will need to re-select them.
+      </p>
+      <div style="display: flex; gap: 0.75rem; justify-content: center;">
+        <button class="btn-secondary" style="flex: 1;" onclick="app.closeModal('modal-confirm-clear')">Keep Dishes</button>
+        <button class="btn-primary" style="flex: 1; background: var(--danger);" onclick="app.executeClearCart()">Yes, Wipe Bag</button>
+      </div>
+      <span class="hci-badge-pill" onclick="app.inspectHci('h5_error_prev', event)">HCI: Error Prevention Confirmation</span>
+    </div>
+  </div>
+
+  <!-- Cancel Order Modal -->
+  <div class="modal-backdrop" id="modal-confirm-cancel">
+    <div class="modal-card" style="text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🛑</div>
+      <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-white);">Cancel live order?</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Your order is currently being prepared. A full 100% refund will be credited back to your card.
+      </p>
+      <div style="display: flex; gap: 0.75rem; justify-content: center;">
+        <button class="btn-secondary" style="flex: 1;" onclick="app.closeModal('modal-confirm-cancel')">Keep My Order</button>
+        <button class="btn-primary" style="flex: 1; background: var(--danger);" onclick="app.executeCancelOrder()">Confirm Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HCI Principle Inspector Popover Modal -->
+  <div class="modal-backdrop" id="modal-hci-inspector">
+    <div class="modal-card" style="border-top: 5px solid #F59E0B;">
+      <button class="modal-close-btn" onclick="app.closeModal('modal-hci-inspector')">✕</button>
+      <div style="display: flex; align-items: center; gap: 0.5rem; color: #D97706; font-size: 0.82rem; font-weight: 800; margin-bottom: 0.5rem;">
+        <span>🎯 HCI HEURISTIC EXPLAINER</span>
+        <span id="hci-modal-heuristic-num" style="background: rgba(245, 158, 11, 0.15); padding: 2px 8px; border-radius: 4px;">Nielsen #1</span>
+      </div>
+      <h2 id="hci-modal-title" style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--text-white);">Visibility of System Status</h2>
+      <div style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; border: 1px solid var(--border-glass);">
+        <strong style="display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.25rem;">Theoretical Principle:</strong>
+        <p id="hci-modal-desc" style="font-size: 0.88rem; color: var(--text-main); margin-bottom: 0;"></p>
+      </div>
+      <div>
+        <strong style="display: block; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; margin-bottom: 0.25rem;">How It Is Implemented In QuickBite:</strong>
+        <p id="hci-modal-impl" style="font-size: 0.9rem; color: var(--text-main); font-weight: 500; line-height: 1.5; margin-bottom: 0;"></p>
+      </div>
+      <button class="btn-secondary" style="width: 100%; margin-top: 1.5rem;" onclick="app.closeModal('modal-hci-inspector')">Understood, Close</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Canvas for Confetti -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
